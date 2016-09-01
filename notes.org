@@ -1,0 +1,112 @@
+* CSCE 434
+** Compiler Components
+*** Compiler Overview
+- Generates correct code
+- Recognize legal and illegal programs
+- Manage storage of variables and code
+- Must understand machine code
+*** Two-Pass Compilers
+**** Front End
+- Maps code to Intermediate Language (IL)
+- Swappable
+- O(n) or O(n log n)
+***** Characteristics
+- Recognizes Legal Entities
+- Reports (preferrably helpful) Errors
+- Produces IL
+- Produces Preliminary Storage Map
+- Shapes the Code
+- Much of this can be automated
+  - E.g. Flex and Bison, or Lex and YACC
+***** Components
+****** Scanner
+- Collects input characters into *Tokens*
+  - Tokens are the basic unit of syntax
+  - Character string for a token is called a *Lexeme*
+- Eliminates white space
+- Speed is important
+- Examples: number, id, +, -, do, end
+******* Pattern Recognizer
+******** Easy Patterns
+- White spaces
+- Keywords and Operators
+- Comments
+******** Harder Patterns
+How do we identify these harder patterns?
+- Identifiers
+- Numbers
+******** Regular Expressions
+- Patterns can be specified as Regular Expressions
+- Notations for Regular Language (aka Regular Set) include Regular Expressions
+  and Regular Grammars
+- We can use Regular Expressions to automatically build scanners
+********* Order or precedence
+- Closure
+- Concatenation
+- Alternation
+****** Parser
+- Recognizes Context-Free Syntax
+- Gues Context-Sensitive Analysis
+- Produces IL
+- Produces Useful Error Messages
+- Attempts Error Correction
+******* Grammar
+- Grammar specifies the Context-Free Syntax
+- Backus-Naur Form
+- Example: ~<laughter> ::= <laughter>~
+  - ha or haha or hahaha etc
+******** Formal
+- A grammar G = (S, N, T, P)
+- S is the start symbol
+- N is the set of non-terminal symbols
+- T is the set of terminal symbols
+- P is the set of productions (rewrite rules)
+******* Parse Trees
+- A parse can be represented by a tree
+  - also called a syntax tree
+- A parse tree can be simpified into an Abstract Syntax Tree
+  - Much more concise
+  - Often used as the IL
+**** Back End
+- Maps IL to target machine
+- Swappable
+- NP-Complete
+***** Characteristics
+- Translates IL into target's Machine Code
+- Chooses Instructions for each IL operation
+- Decides what to store in registers and when
+- Ensures conformance with system interfaces
+- Automation of the Back End is less successful
+****** Instruction Selection
+- Produce compact, fast code
+- Use available addressing modes
+- Pattern matching problem
+  - Ad hoc techniques
+  - Tree pattern matchine
+****** Register Allocation
+- It's a Cache Effect!
+- Goa is to always have a needed value available in a register
+- Number of registers is limited
+- Instrutions choice may depend on register allocation
+- Moving Loads and Stores
+- Difficult Problem
+- NP-Compleete for 1 or k registers
+*** Three-Pass Compilers
+**** Middle stage is added
+- Analyzes and alters IL
+- Usual Goal is to reduce Runtime
+- Must not make code incorrect
+***** Characteristics
+- Optimizer usually runs in multiple passes
+- Optimizes in many ways
+  - Encode idiom in a single instruction (e.g. increment)
+  - Discover and propagate constants
+  - Operator strength reduction (e.g. Multiplies to Adds)
+  - Elimiate redundant computation
+  - Eliminate common subexpressions
+*** All the Compilers!
+- Mixing and matching front and back ends
+  - All knowledge must be encoded in the front end
+  - All different language features must be in IL
+  - Every backend must handle all features
+- Great in theory, really hard in practice
