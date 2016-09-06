@@ -110,3 +110,64 @@ How do we identify these harder patterns?
   - All different language features must be in IL
   - Every backend must handle all features
 - Great in theory, really hard in practice
+** Front End
+*** Scanner
+- Must recognize various parts of the language's syntax
+- Separate those parts into tokens using a scanner
+**** Regular Expressions
+- Regular Expressions represent languages
+- Languages are sets of strings
+- Operations include
+  - Kleene Closure,
+  - concatenation, and
+  - union
+**** Recognizers
+- Deterministic Finite Automata (DFA) can be recognizers
+***** Table Recognizers
+- Recognizers can be Table-based
+- Changing the tables changes the language
+****** Performance Considerations
+- Table-driven Implementations are Slow
+- At every State Transition
+- Classify input character
+- Find next state
+- Assign state variable
+- Branch
+- Evaluate case statement
+******* Improve performance
+- Encoding state table in scanner code improves performance
+  - Classify input character
+  - Test character class locally
+  - Branch directly to next state
+- Results in fewer instructions per cycle
+**** Challenges
+- Reserved words
+  - PL/I has no reserved words
+  - Which are reserved words, which are identifiers, which are garbage?
+  - Significant Space
+  - do 10 i = 1,25
+- String Constants
+  - Special characters in strings
+- Finite closures
+  - Some languages limit identifier length
+- Good language design avoids these issues!
+**** Lexical Errors
+- Any input rejected by the lexer
+  - Usually caused by running off the end of a rule
+- Scanner actions
+  - Report the error
+  - Correct it
+- Correction techniques
+  - Minimum distance correction
+    - Jump ahead a minimum distance
+    - Pick up from there
+  - Hard token recovery
+    - Skip ahead to a semicolon for example
+    - Pick up from there
+  - SKip until match
+    - Skip until you find a match for the rule
+**** Project 1
+- Flex is amazing!
+- Start early!
+- Work often!
+- Check piazza
