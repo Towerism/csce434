@@ -171,3 +171,36 @@ How do we identify these harder patterns?
 - Start early!
 - Work often!
 - Check piazza
+** Scanner
+*** Front End
+- Separates input into tokens
+- Legal tokens are usually specified by REs
+- RE specify regular languages
+- RE are usually solved using finite memory (DFAs)
+**** DFA Advantages
+- Simple to implement
+- Character transitions are O(1)
+- Word recognitions are O(|input|)
+- Construction can be automated
+**** DFA Limitations
+- Not all languages are regular, like HTML
+- DFAs cannot count
+- DFAs can pattern match!
+  - Alternating 0's and 1's
+  - Pairs
+**** When determinism fails
+- RE: (a|b)*abb
+- Non-Determinism to the Rescue!
+  - By using epsilon transitions
+  - Can have a non-deterministic state decision between a and a|b
+**** NFA vs DFA
+- DFA is a special case of NFA
+  - No epsilon transitions
+  - Single value transition functions
+- DFA can be simulated with an NFA
+  - Self-evident
+- NFA can be simulated with a DFA
+  - Simulate sets of simultaneous states
+  - Can grow exponentially large
+**** Building RE from DFA and vice versa
+- It is possible in both directions
