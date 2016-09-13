@@ -204,3 +204,72 @@ How do we identify these harder patterns?
   - Can grow exponentially large
 **** Building RE from DFA and vice versa
 - It is possible in both directions
+** Parser
+- Performs context-free syntax analysis
+- Guides Syntax Analysis (SA)
+- Construct _Meaningful_ intermediate representation
+- Meaningful error messages
+- Attempt error correction
+*** Formal 
+- Context Free Grammar (CFG)
+- Tuple (T, NT, S, P)
+  - T = Terminals (Tokens)
+  - NT = Nonterminals (Syntactic Variables)
+  - S = Start/Goal Symbol
+  - P = Set of Productions (Rules)
+*** Backus-Naur Form
+- NT => Brackets or Capitals
+- T => Underline, typewriter font
+- P => <goal> ::= <expression>
+       <expr> ::= <expr> <op> <expr> | _Number_ | _id_
+*** Chomsky Hierarchy
+- 0 - Turing Machine (Recursive/Unrestricted)
+- 1 - Linear Bound Automata (Context-Sensitive)
+- 2 - Nondeterminstic push bound automata (Context-Free)
+- 3 - (Regular)
+**** Regular Grammar
+- Provable fact: for any R.E. r there exists a grammar g such that L(r) = L(g)
+- Defs of Regular Grammar: terminal followed by nonterminal or terminal
+  - A => aA
+  - A => a
+*** Scanning vs Parsing
+- Scanning
+  - Id, #, Keywords
+  - No counting
+  - No meaning
+- Parsing
+  - Order
+  - Counting
+  - Impart structure
+  - No meaning
+*** Types of Parsers
+LR(k) - LR Parser, k tokens of look ahead
+**** LR-Parser 
+- _L_eft to Right, _R_ightmost derivation first
+- Bottom-up Parse
+**** LL-Parser
+- _L_eft to Right, _L_eftmost derivation first
+- Top-down parse
+**** LALR-Parser
+- _L_ook _A_head _LR_-Parser
+- Not as powerful as LR(1), but more performant and powerful than standard LR
+**** SLR-Parser
+- Simple LR Parser
+- Utilizes approximations based on the given rules
+*** Complexity of Parsing
+- R.E.; recognized by Discrete Finite Automata (DFAs); O(n)
+- LR Grammars; Knuth's Algorithm; O(n)
+- Arbitrary CFGs; Early's Algorithm; O(n^3)
+- Arbitrary CSGs; LBA; P-space complete
+  - probably outside P and NP, but we are not sure
+  - polynomial to the input length
+*** Project 2
+- Due 9/20/16 midnight
+- Syntax Analysis
+- Piazza.com
+- Turn in through csnet
+- scanner.l
+- parser.y
+- ast.* (abstract syntax tree), not used in this project, but look at them
+- implement post incr/decr and switch statement (not in the decaf spec)
+- rules are on page 2 of the spec
