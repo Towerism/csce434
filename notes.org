@@ -273,3 +273,17 @@ LR(k) - LR Parser, k tokens of look ahead
 - ast.* (abstract syntax tree), not used in this project, but look at them
 - implement post incr/decr and switch statement (not in the decaf spec)
 - rules are on page 2 of the spec
+*** Ambiguity
+**** context-free
+- Multiple leftmost derivations
+- LL-Parsers
+- If then else statements for example
+  - <Stmt> -> <M> | <N>
+    <N>    -> if <expr> then <N> else <N> | other stuff
+    <M>    -> if <expr> then <Stmt> |
+              if <expr> then <N> else <M>
+**** context-sensitive
+- overloading
+  A = f(17)
+- Is that f a function or an array with a subscript
+- It depends on what value A is or what it's type is
