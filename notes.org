@@ -287,3 +287,29 @@ LR(k) - LR Parser, k tokens of look ahead
   A = f(17)
 - Is that f a function or an array with a subscript
 - It depends on what value A is or what it's type is
+*** LL-Parsers vs LR-Parsers
+**** LL: Top-Down 
+- Start at root of tree (start symbol)
+- May backtrack
+  - Some grammars are backtrack-free, otherwise called *predictive*
+***** Process
+1. Start at node A
+   - Select Production
+     - A on left hand side
+     - For each symbol on the right hand side
+       - Process it
+2. When a terminal is next in the production that doesn't match the input
+   - *Backtrack*
+3. Find the next node
+   - go back to 1.
+***** Problem of left recursion
+- A grammar $G$ is left recursive if $\exists A \in NT$ s.t. there exists a
+  derivation $A \rightarrow^+\alpha$ for some =string= $\alpha$
+- This can cause infinite loop
+- Solution: use right recursion instead
+  - Now, be careful not to screw up associativity and therefore precedence
+    - Arrange nonterminals $A_0\ldotsA_n$ in some order
+**** LR: Bottom-Up
+- Start at leaves (end at goal symbol)
+- Start in valid state
+- Requires a stack to keep track of state and sentence forms
