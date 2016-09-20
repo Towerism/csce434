@@ -313,3 +313,4 @@ LR(k) - LR Parser, k tokens of look ahead
 - Start at leaves (end at goal symbol)
 - Start in valid state
 - Requires a stack to keep track of state and sentence forms
+*** Look-Ahead
