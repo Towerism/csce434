@@ -314,3 +314,73 @@ LR(k) - LR Parser, k tokens of look ahead
 - Start in valid state
 - Requires a stack to keep track of state and sentence forms
 *** Look-Ahead
+- Top-Down LL(k)
+- Bottom-Up LR(k)
+- Earley Parser/Algorithm
+  - Worst-case $O(n^3)$
+  - Most LR(k) $O(n)$
+  - Unambiguous $O(n^2)$
+- Cocke-Younger-Kasami (CYK)
+  - LR(1), LL(1)
+**** Predictive Parsing
+- For any two productions $A \rightarrow \alpha | \beta$ We want a distinctive
+  way of picking the correct production to expand. 
+- For some RHS $\alpha \in G$, define $\text{First}(\alpha)$ as set of tokens
+  that appear as the first symbol in some string derived from $\alpha$.
+***** Key Property
+- Whenever 2 productions $A \rightarrow \alpha$ and $A \rightarrow
+  \beta$ both appear in grammar $G$, then $\text{First}(\alpha)\cap\text{First}(\beta)=\emptyset$
+- For each Non-Terminal $A$, find the longest prefix $\alpha$ that is common to
+  two or more of its alternatives. If $\alpha\neq\epsilon$, then replace all
+  productions $A \rightarrow \alpha\beta_1|\alpha\beta_2|\cdots$ with $A
+  \rightarrow \alpha; L \rightarrow \beta_1|\beta_2|\cdots$
+**** Recursive Top-Down Parser
+- AKA Descent
+- Starts from a goal
+*** Non-recursive Predictive Parsing
+- LL algoritm
+  - initialize token $t$
+  - push EOF then start token onto stack
+  - get next token into $t$
+  - peek stack onto $x$
+  - Loop
+    - If $x$ is terminal or EOF
+      - If $x$ is token
+        - Pop stack
+        - get next token into $t$
+      - Else error()
+    - Else nonterminal
+      - If M[$x$,token]=$x$ is some production
+        - pop $x$
+        - push the production
+      - Else error
+*** Parse Table
+- Table axes: Non-terminals, terminals
+- The cells are the productions relevant to the non-terminal and terminal in question
+*** FIRST Set
+- For a string of grammar symbols $\alpha$
+- Then $\text{FIRST}(\alpha)$
+  - set of _terminal_ symbols that begin string derived from $alpha$
+  - If $\alpha=\rightarrow*\epsilon$, then $\epsilon\in\text{FIRST}(\alpha)$
+- Example
+  - $\text{first}(+)=\{+\}$
+**** Rules
+1) if $x$ is a terminal, $\text{first}(x)=x$
+2) if $x \rightarrow \epsilon$ then $\epsilon\in\text{first}(x)$
+3) if $x\rightarrow y_1y_2\ldots y_k$ then $\text{first}(y_1)\in\text{first}(x)$
+4) If $X$ is non-terminal and $X\rightarrow y_1y_2\ldots y_k$ then
+   $a\in\text{FIRST}(X)$ is
+   - $a\in\text{FIRST}(y_j)$ and $\epsilon\in\text{FIRST}(y_j)$
+   - For all $1\leq j\leq i$
+*** FOLLOW set
+- For a non-terminal $A$, the $\text{FOLLOW}(A)$
+  - The set of _terminals_ that can appear immediately to the right of $A$ in
+    some sentential form
+**** Rules
+1) Place EOF in $\text{FOLLOW}(G)$
+2) If $A\rightarrow\alpha Bc$ then put $\{\text{FIRST}(c)-\epsilon\}$ in $\text{FOLLOW}(B)$
+3) If $A\rightarrow\alpha B$ then put $\text{FOLLOW}(A)$ in $\text{FOLLOW}(B)$
+4) If $A\rightarrow\alpha Bc$ and $\epsilon \in\text{FIRST}(c)$ then put $\text{FOLLOW}(A)$ in $\text{FOLLOW}(B)$
+*** LL(1) Grammar 
+- A grammar $G$ is LL(1) IFF for all non-terminals $A$, each distinct pair of
+  productions $A\rightarrow B$ and $A\rightarrow C$ satisfy the condition $\text{FIRST}(B)\cap\text{FIRST}(C)=\emptyset$
