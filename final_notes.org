@@ -1,0 +1,53 @@
+#+LATEX_HEADER: \usepackage[margin=0.1in]{geometry}
+#+OPTIONS: toc:nil num:nil
+#+LATEX_CLASS_OPTIONS: [koma,twocolumn]
+#+LATEX_HEADER:\usepackage{enumitem}
+#+LATEX_HEADER:\setlist{nolistsep}
+#+LATEX_HEADER:\usepackage{titlesec}
+#+LATEX_HEADER:\titlespacing\section{0pt}{2pt minus 2pt}{0pt plus 2pt minus 2pt}
+#+LATEX_HEADER:\titlespacing\subsection{0pt}{2pt minus 2pt}{0pt plus 2pt minus 2pt}
+#+LATEX_HEADER:\titlespacing\subsubsection{0pt}{2pt minus 2pt}{0pt plus 2pt minus 2pt}
+Martin Fracker
+* Available Expr
+Forward Must/Every/All. Eliminate common subexpressions
+- Gen(N): any expr $E$ at node $N$ that is evaluated at $E$
+- Kill(N): any expr $E$ which has a component redefined at N
+- In-Avail(N): $\cap_{P\in Pred(N)}Out-Avail(P)$
+- Out-Avail(N): $(In-Avail(N) \cup Gen(N)-Kill(N))$
+* Liveness Analysis
+Backwards May/Any/Some. Determine whether data is live (may need to be spilled)
+or dead (can be overwritten)
+- In(N): $Out(N)-(Kill(N)\cup Gen(N))$
+- Out(N): $\cup_{S\in Succ(N)}In(N)$ (Used on some control path startin at $N$)
+- Gen(N): Variable used in $N$.
+- Kill(N): Any variable defined and not used
+* Peephole (window of code) optimizations
+Applied to small set of instructions
+- Constant folding, e.g. $A = 5 + 7 \rightarrow A = 12$
+- Strength Reduction, e.g. $A = A * 3 \rightarrow A = A+A+A$
+- Null sequences, useless code
+- Algebraic expressions, identities and substitutions to simplify code
+- Combine operations
+- Special instructions from machine's instruction set
+* Classical Optimizations
+- Loop invariant code motion, e.g. hoisting
+- Common subexpression elimination
+- Liveness analysis
+- Loop fusion
+- Loop unrolling
+- Dead code elimination
+* Sethi-Ullman
+Algorithm for Reducing Register Use.
+- Uses an AST.
+- The register use should be the value of the root node after running the
+  algorithm
+- Improvement to handle a load delay $L>0$ is Delayed Load Architecture
+  (Lecture 21) and re-ordering load instructions in order to hide the delay
+- Traverse in Pre-/Post-order
+  - Leaf nodes
+    - Each non-constant node, assign 1 (If more efficient instruction set, then
+      if $\#_L=1$ set $\#_R=0$)
+    - Each constant node, assign 0
+  - Inner nodes
+    - If $\#_L \neq \#_R$, assign $\max(\#_L, \#_R)$
+    - If $\#_L = \#_R$, then assign $\#_R+1$
