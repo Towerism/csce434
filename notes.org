@@ -384,3 +384,99 @@ LR(k) - LR Parser, k tokens of look ahead
 *** LL(1) Grammar 
 - A grammar $G$ is LL(1) IFF for all non-terminals $A$, each distinct pair of
   productions $A\rightarrow B$ and $A\rightarrow C$ satisfy the condition $\text{FIRST}(B)\cap\text{FIRST}(C)=\emptyset$
+**** Facts
+1) No left-recursion grammar is LL(1)
+2) No ambiguous grammar is LL(1)
+3) LL(1) parsers are O(n)
+4) An $\epsilon$ -free grammar where each alternate expansion for $A$ begins
+   with a distinct terminal is a _simple_ LL(1) grammar
+5) Not all grammars are LL(1)
+*** Types of Parsers
+- SLR(1) = LR(0)+FOLLOW
+  - Simple LR Parser
+  - Shift-reduce parsers
+  - Smallest class of grammars
+  - Smallest tables (no. of states)
+  - Simple, fast construction
+- LR(1) - canonical LR parser
+  - Full set LR(1) grammar
+  - Largest tables
+  - Slow, large construction
+- LALR(1)
+  - Medium set of grammars
+  - Same no. of states (same table size) SLR(1)
+  - construction
+    - slow and large (canonical method)
+    - Faster and smaller (alternatives)
+- Examples
+  - You can use a LR(1) parser or a SLR/LALR(1) parser for pascal. The former
+    has several thousand more states, so the latter is preferred
+*** Bottom Up LR(k)
+- For a Grammar $G$ with start symbol $S$. Any string $\alpha$ such that
+  $S\rightarrow^*\alpha$ is called a sential form
+  - If $\alpha$ contains only terminal symbols, $\alpha$ is a sentence in $L(G)$
+  - If $\alpha$ contains one or more non-terminals, $\alpha$ is _just a
+    sentential form_ (so it is not a sentence in $L(G)$
+- _Left-Sentential form_ is a sentential form S.F. that occurs in Leftmost
+  derivation of some sentence
+- _Right-Sentential form_ is a sentential form S.F. that occurs in Rightmost
+  derivation of some sentence
+**** Goal
+- Given an input string $w$ and a grammar $G$ construct a parse tree by starting
+  at leaves and working way up to the root
+- At each step ( match )-Apply _reduction_
+  - Each reduction replaces the matching substring with the non-terminal on LHS
+  - Each reduction adds internal nodes to the parse tree
+  - Result of reductions is a sentential form
+**** Handle
+- Find substring alpha of RSF
+  - alpha matches some production A to alpha
+  - Reduce (alpha to A) in one step, in a reverse of rightmovst drivation
+- Handle of a RSF Y is a roduction (A to beta) and a position in T where Beta
+  can be found
+- If (A to beta, k) in a handle, then replacing beta in Y at position k with A
+  produces the previous RSF in a Rightmost derivation of Y
+***** Pruning
+- To construct a rightmost derivation (S to y1 to y2 to y3 and so on until
+  y[n-1] to y[n] equals our substring w) we set i to n and apply this algorithm
+  - From i = n to 1 by -1
+  - Find handle (A[i] to beta[i]k[i]) in y[i]
+  - Replace beta[i] with A[i] to generate y[i-1]
+  - 2n steps, n is lengh of derivation
+****** Shift-reduce parser
+- Has stack and input buffer
+  - Initialize stack $
+  - repeat until top of stack is $ and input token is EOF
+    - Find handle
+      - If top of stack is not handle, shift one input
+        - symbol onto stack
+    - Prune the handle
+      - If we have a handle (A to beta,k) on the stack, then reduce
+      - pop all beta symbols of stack
+      - push A onto stack
+*** Viable Prefix
+- A prefix of Right-Sentential Form that does not continue past the right end of
+  the right-most handle of that sentential form
+- OR, it is a prefix of a right-sentential form that can appear on the stack of
+  a shift-reduce parser
+- If a VPrefix is a proper prefix (a handle), it is possible to add terminals
+  onto the end to form a right sentential form
+**** More facts about the VP
+- Contains both terminals and non-terminals
+- Recognize by NFA or DFA
+*** LR(0) Items (Items)
+- An LR(0) item is a string [\alpha] where $\alpha$ is a production for G with a
+  dot at some position on RHS
+- The dot indicates how much of an item we have seen at any given state in the parse
+*** Canonical LR(0) items
+- SLR(1) table uses a specific set of sets of LR(0) items
+  - These sets are the _canonical collection_ of sets of LR(0) items for Grammar G
+    - Prepresents set of valid states for the parser
+- The Items in each set of the CC fall into two classes
+  - Kernel items: items where the dot is not at the left end of the right hand
+    side and we have some production s' to dot s
+  - Non-kernel items: items where the dot is at the left end of the right hand
+    side
+*** Facts about items
+- They correspond to a point in the parse
+- We can generate a parse state by taking the closure of a kernel item
